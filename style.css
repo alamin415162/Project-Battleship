@@ -1,0 +1,60 @@
+h1 {
+    text-align: center;
+}
+
+#gameStatus{
+    border: 1px solid green;
+    width: 1fr;
+    height: 15em;
+}
+
+#player2 {
+    text-align:end;
+}
+#player1 {
+    text-align:left;
+}
+
+
+#main  {
+    display: grid;
+    
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    height: 100vh;
+    gap: 50px;
+}
+
+
+#player1{
+    font-size: 1rem;
+    background-color: aqua;
+    margin-left: 3em;
+}
+#player2{
+    font-size: 1rem;
+    background-color: rgb(246, 255, 0);
+    margin-left: 3em;
+}
+
+#left {
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10,1fr);
+}
+#right{
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10,1fr);
+}
+
+.left-side {
+    border: 1px solid black;
+    place-items: center;
+    text-align: center;
+}
+#right  {
+    border: 1px solid black;
+}

@@ -1,0 +1,165 @@
+class Ship {
+    constructor(length) {
+        this.length = length;
+        this.damage = 0;
+        this.floating = true;
+        this.horizontal = true;
+        this.coordinates = [];
+    }
+
+    hit() {
+        return this.damage++;
+    }
+
+    isSunk() {
+        if (this.damage >= this.length) {
+            this.floating = false;
+        }
+
+        return !this.floating;
+    }
+
+
+
+}
+
+
+
+class GameBoard {
+
+    constructor() {
+        this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
+        this.missedShots = [];
+        this.ships = []
+
+    }
+
+    shipPlacement(x, y, length) {
+        if (this.ships.length === 5) {
+            return "All five Ships Added";
+        }
+        if (!isValid(x, y)) {
+            return 'invalid input';
+        }
+
+        const ship = new Ship(length);
+        // a logic missing to check every bit length of ships coordinates
+       
+        if(y + length - 1 > 9){
+            console.log("out of box")
+            return;
+        }
+        for (let i = 0; i < ship.length; i++) {
+            if (!isValid(x, y)) {
+                console.log("Out of Box")
+                return;
+            }
+            this.board[x][y++] = this.ships.length;
+        }
+        this.ships.push(ship);
+        return this.ships;
+
+        function isValid(x, y, ship) {
+            if ((x || y) > 9 || (x || y) < 0) {
+                return false;
+            }
+            
+            return true;
+        }
+    }
+    shipName(ship) {
+        switch (ship.length) {
+            case 5:
+                return "carrier";
+
+            case 4:
+                return "Battleship";
+
+            case 3:
+                return "Cruiser or Submarine";
+
+            case 2:
+                return "Destroyer"
+
+        }
+
+    }
+
+
+    receiveAttack(x, y) {
+        if (this.board[x][y] !== null) {
+            if (this.missedShots.includes([x, y].toString())) {
+                return "this spot already hit";
+            }
+            let shot = this.board[x][y];
+            this.ships[shot].hit()
+            if (this.ships[shot].isSunk()) {
+                this.missedShots.push([x, y].toString())
+                let name = this.shipName(this.ships[shot])
+                //this.ships.splice(shot, 1)
+                return (`you sank my ship ${name}`);
+
+            } else {
+                this.missedShots.push([x, y].toString());
+            }
+            // return this.ships[shot].length;
+            return "you hit a target"
+        }
+        else {
+            if (this.missedShots.includes([x, y].toString())) {
+                return "this spot already hit";
+            }
+            this.missedShots.push([x, y].toString())
+            return "you missed a shot";
+        }
+
+
+
+
+    }
+
+    gameLost() {
+        if (!this.ships.length) {
+            return 'all ships drowned';
+        }
+        return false;
+    }
+}
+
+
+class Player {
+    constructor(name) {
+        this.player = name;
+        this.field = new GameBoard()
+    }
+
+}
+
+
+const real = new Player('alamin');
+const computer = new Player('machine');
+
+
+// real.field.shipPlacement(0,0,5)
+// real.field.shipPlacement(2,3,4)
+// real.field.shipPlacement(2,5,3)
+// real.field.shipPlacement(6,1,2)
+// real.field.shipPlacement(1,8,1)
+
+// real.field.receiveAttack(0,0,5)
+// real.field.receiveAttack(1,0,5)
+// real.field.receiveAttack(2,0,5)
+// real.field.receiveAttack(3,0,5)
+// //real.field.receiveAttack(4,0,5)
+// real.field.shipPlacement(2,3,4)
+// real.field.shipPlacement(2,5,3)
+// real.field.shipPlacement(6,1,2)
+// real.field.shipPlacement(1,8,1)
+
+// console.log(real.field.ships)
+
+// console.log(real.field.board);
+
+
+
+export { Ship, GameBoard, Player }
