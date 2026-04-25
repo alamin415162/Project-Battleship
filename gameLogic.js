@@ -31,6 +31,7 @@ class GameBoard {
         this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
         this.missedShots = [];
         this.ships = []
+        this.sunkShips = 0;
 
     }
 
@@ -44,8 +45,8 @@ class GameBoard {
 
         const ship = new Ship(length);
         // a logic missing to check every bit length of ships coordinates
-       
-        if(y + length - 1 > 9){
+
+        if (y + length - 1 > 9) {
             console.log("out of box")
             return;
         }
@@ -63,7 +64,7 @@ class GameBoard {
             if ((x || y) > 9 || (x || y) < 0) {
                 return false;
             }
-            
+
             return true;
         }
     }
@@ -85,11 +86,16 @@ class GameBoard {
 
     }
 
+    // numerical representation of different scenarios
+    // miss a shot = 0
+    // hit a spot twice = 1
+    // hit a target = 2
+    // ship sank = else;
 
     receiveAttack(x, y) {
         if (this.board[x][y] !== null) {
             if (this.missedShots.includes([x, y].toString())) {
-                return "this spot already hit";
+                return 1;
             }
             let shot = this.board[x][y];
             this.ships[shot].hit()
@@ -97,20 +103,18 @@ class GameBoard {
                 this.missedShots.push([x, y].toString())
                 let name = this.shipName(this.ships[shot])
                 //this.ships.splice(shot, 1)
-                return (`you sank my ship ${name}`);
+                this.sunkShips++;
+                return this.gameLost() ? this.gameLost() : (`you sank my ship ${name}`);
 
             } else {
                 this.missedShots.push([x, y].toString());
             }
             // return this.ships[shot].length;
-            return "you hit a target"
+            return 2;
         }
         else {
-            if (this.missedShots.includes([x, y].toString())) {
-                return "this spot already hit";
-            }
             this.missedShots.push([x, y].toString())
-            return "you missed a shot";
+            return 0;
         }
 
 
@@ -119,8 +123,8 @@ class GameBoard {
     }
 
     gameLost() {
-        if (!this.ships.length) {
-            return 'all ships drowned';
+        if (this.sunkShips === 3) {
+            return "Game Over!";
         }
         return false;
     }
@@ -159,6 +163,7 @@ const computer = new Player('machine');
 // console.log(real.field.ships)
 
 // console.log(real.field.board);
+
 
 
 
