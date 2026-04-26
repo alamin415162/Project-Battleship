@@ -140,31 +140,4 @@ class Player {
 }
 
 
-const real = new Player('alamin');
-const computer = new Player('machine');
-
-
-// real.field.shipPlacement(0,0,5)
-// real.field.shipPlacement(2,3,4)
-// real.field.shipPlacement(2,5,3)
-// real.field.shipPlacement(6,1,2)
-// real.field.shipPlacement(1,8,1)
-
-// real.field.receiveAttack(0,0,5)
-// real.field.receiveAttack(1,0,5)
-// real.field.receiveAttack(2,0,5)
-// real.field.receiveAttack(3,0,5)
-// //real.field.receiveAttack(4,0,5)
-// real.field.shipPlacement(2,3,4)
-// real.field.shipPlacement(2,5,3)
-// real.field.shipPlacement(6,1,2)
-// real.field.shipPlacement(1,8,1)
-
-// console.log(real.field.ships)
-
-// console.log(real.field.board);
-
-
-
-
 export { Ship, GameBoard, Player }
