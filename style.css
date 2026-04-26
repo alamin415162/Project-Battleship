@@ -52,14 +52,14 @@ button {
 #left {
     border: 1px solid black;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10,1fr);
+    grid-template-columns: repeat(10, 4em);
+    grid-template-rows: repeat(10,4em);
 }
 #right{
     border: 1px solid black;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10,1fr);
+    grid-template-columns: repeat(10, 4em);
+    grid-template-rows: repeat(10,4em);
 }
 
 .left-side {

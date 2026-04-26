@@ -123,7 +123,7 @@ class GameBoard {
     }
 
     gameLost() {
-        if (this.sunkShips === 3) {
+        if (this.sunkShips === this.ships.length) {
             return "Game Over!";
         }
         return false;

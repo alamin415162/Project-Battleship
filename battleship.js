@@ -7,26 +7,38 @@ const right = document.querySelector('#right')
 const player1 = new Player('alamin');
 const player2 = new Player('computer');
 
-function placing(player) {
+function placingShip(player) {
     let x = parseInt((prompt("Enter x coordinate")))
     let y = parseInt(prompt("Enter y coordinate"))
     let length = parseInt(prompt("Enter length of Your Ship"))
     player.field.shipPlacement(x, y, length);
     return;
 }
+const btn1 = document.querySelector("#btn1");
+const btn2 = document.querySelector("#btn2");
+
+
+btn2.addEventListener("click", () => {
+    placingShip(player2);
+    
+})
+
+btn1.addEventListener("click", () => {
+    placingShip(player1);
+})
 
 // const btn1 = document.querySelector('#btn1');
 // btn1.addEventListener('click', () => {
 //     placing(player1);
 // })
-player1.field.shipPlacement(0, 0, 4)
-player1.field.shipPlacement(6, 5, 5)
-player1.field.shipPlacement(6, 1, 3)
+// player1.field.shipPlacement(0, 0, 4)
+// player1.field.shipPlacement(6, 5, 5)
+// player1.field.shipPlacement(6, 1, 3)
 
 
-player2.field.shipPlacement(0, 0, 4)
-player2.field.shipPlacement(6, 5, 5)
-player2.field.shipPlacement(6, 1, 3)
+// player2.field.shipPlacement(0, 0, 4)
+// player2.field.shipPlacement(6, 5, 5)
+// player2.field.shipPlacement(6, 1, 3)
 
 const status1 = document.querySelector('#player1');
 const status2 = document.querySelector('#player2');
@@ -53,36 +65,33 @@ function randomPosition(min, max) {
 }
 
 
-window.addEventListener('load', () => {
-    const board1 = player1.field.board;
-    let q = 0;
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            items1[q].textContent = board1[i][j]
-            q++;
-        }
-    }
+// window.addEventListener('load', () => {
+//     const board1 = player1.field.board;
+//     let q = 0;
+//     for (let i = 0; i < 10; i++) {
+//         for (let j = 0; j < 10; j++) {
+//             items1[q].textContent = board1[i][j]
+//             q++;
+//         }
+//     }
 
-    const board2 = player2.field.board;
-    let p = 0;
-    for (let x = 0; x < 10; x++) {
-        for (let y = 0; y < 10; y++) {
-            items2[p].textContent = board2[x][y]
-            p++;
-        }
-    }
+//     const board2 = player2.field.board;
+//     let p = 0;
+//     for (let x = 0; x < 10; x++) {
+//         for (let y = 0; y < 10; y++) {
+//             items2[p].textContent = board2[x][y]
+//             p++;
+//         }
+//     }
 
 
-})
+// })
 
 const replay = document.querySelector('#replay');
-replay.addEventListener('click', () => {
-    location.reload();
-    left.style.display = hidden;
-})
 
 const myTurn = {
-    turn: true
+    turn: true,
+    gameOver: false
 }
 
 // numerical representation of different scenarios
@@ -93,15 +102,16 @@ const myTurn = {
 
 
 function computerPlaying(player) {
-    if (myTurn.turn) {
-        myTurn.turn = false;
+    if (!myTurn.turn  && myTurn.gameOver === false) {
+        myTurn.turn = true;
     } else { return; }
 
     let [row, col] = randomPosition(0, 10);
 
-    let index = findIndex(row,col);
-    
+    let index = findIndex(row, col);
+
     const temp = player.field.receiveAttack(row, col);
+    console.log(temp)
     if (temp === 1) {
         status1.textContent = "Spot Occupied";
         items1[index].style.setProperty('background-Color', 'blue', 'important');
@@ -117,17 +127,16 @@ function computerPlaying(player) {
         if (status2.textContent === "Game Over!") {
             status2.style.backgroundColor = 'red';
             status2.style.color = 'white';
+            myTurn.gameOver = true;
         }
     }
 
-    function findIndex(x,y){
+    function findIndex(x, y) {
         return (x * 10) + y;
     }
 
 
 }
-
-computerPlaying(player1)
 
 // left.addEventListener('click', (e) => {
 //     e.preventDefault();
@@ -176,8 +185,8 @@ right.addEventListener('click', (e) => {
     let row = Math.floor(index / columnsCount2);
     let col = (index % columnsCount2);
 
-    if (!myTurn.turn) {
-        myTurn.turn = true;
+    if (myTurn.turn && myTurn.gameOver === false) {
+        myTurn.turn = false;
     } else { return }
 
     if (e.target.tagName === 'DIV') {
@@ -189,6 +198,7 @@ right.addEventListener('click', (e) => {
         else if (e.target.textContent !== "X") {
             e.target.style.backgroundColor = 'red'
             let temp = player2.field.receiveAttack(row, col)
+            console.log(temp)
             if (temp === 1) {
                 console.log("spot occupied")
             } else if (temp === 2) {
@@ -198,6 +208,7 @@ right.addEventListener('click', (e) => {
                 if (status2.textContent === "Game Over!") {
                     status2.style.backgroundColor = 'red';
                     status2.style.color = 'white';
+                    myTurn.gameOver = true;
                 }
             }
         }
@@ -215,7 +226,32 @@ right.addEventListener('click', (e) => {
 
 
 
+replay.addEventListener('click', () => {
+    
+    const board1 = player1.field.board;
+    let q = 0;
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            items1[q].textContent = board1[i][j]
+            q++;
+        }
+    }
 
+    const board2 = player2.field.board;
+    let p = 0;
+    for (let x = 0; x < 10; x++) {
+        for (let y = 0; y < 10; y++) {
+            items2[p].textContent = board2[x][y]
+            p++;
+        }
+    }
+   // location.reload();
+
+})
+
+
+
+//computerPlaying(player1)
 
 // right.addEventListener('click', (e) => {
 //     e.preventDefault();
